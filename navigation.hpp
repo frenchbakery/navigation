@@ -12,7 +12,14 @@
 
 #pragma once
 
+#include <el/retcode.hpp>
+
 class Navigation
 {
+public:
+    virtual el::retcode initialize();
+    virtual el::retcode terminate();
 
+    // === System state getters and setters === //
+    
 };
