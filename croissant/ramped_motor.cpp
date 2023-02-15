@@ -40,6 +40,7 @@ void RampedMotor::controllerThreadFn()
             // finished
             freeze();
             pos_ctrl_active = false;
+            pos_target_reached = true;
             continue;
         }
         else
@@ -64,9 +65,12 @@ void RampedMotor::moveAtVelocity(short velocity)
 {
     Motor::moveAtVelocity(velocity);
 }
-void RampedMotor::moveToPosition(short speed, int goalPos)
+void RampedMotor::moveToPosition(short _speed, int goalPos)
 {
-    Motor::moveToPosition(speed, goalPos);
+    speed = _speed;
+    goal_pos = goalPos;
+    // if we are already at the target, the control loop will
+    // exit immediately
     pos_target_reached = false;
     pos_ctrl_active = true;
 }
@@ -81,7 +85,7 @@ void RampedMotor::freeze()
 }
 bool RampedMotor::isMotorDone() const
 {
-    return Motor::isMotorDone() && pos_target_reached;
+    return pos_target_reached;
 }
 void RampedMotor::blockMotorDone() const
 {
