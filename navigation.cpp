@@ -41,6 +41,12 @@ double Navigation::getCurrentRotation() const
     return current_rotation;
 }
 
+el::retcode Navigation::setMotorSpeed(int speed)
+{
+    configured_speed = speed;
+    return el::retcode::ok;
+}
+
 el::retcode Navigation::rotateBy(double angle)
 {
     noimpl();

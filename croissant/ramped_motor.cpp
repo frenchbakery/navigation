@@ -34,6 +34,7 @@ void RampedMotor::controllerThreadFn()
 
         int current_pos = getPosition();
         int delta = std::abs(current_pos - goal_pos);
+        int distance_traveled = std::abs(current_pos - start_pos);
 
         if (delta <= max_pos_goal_delta)
         {
@@ -52,8 +53,14 @@ void RampedMotor::controllerThreadFn()
             // the faster the motor is going, the earlier 
             // it has to start decelerating
             const int decel_start = (speed + 500) / 10; // 500 => 100, 1500 => 200
+            // the faster the motor is going, the longer it should take to accelerate
+            const int accel_end = (speed + 500) / 20;
             if (delta < decel_start)
                 scaledSpeed = std::min(speed, speed * delta / decel_start + min_speed);
+            else if (distance_traveled < accel_end)
+            {
+                scaledSpeed = std::min(speed, speed * distance_traveled / accel_end + min_speed);
+            }
             Motor::moveToPosition(scaledSpeed, goal_pos);
         }
 
@@ -69,6 +76,7 @@ void RampedMotor::moveToPosition(short _speed, int goalPos)
 {
     speed = _speed;
     goal_pos = goalPos;
+    start_pos = getPosition();
     // if we are already at the target, the control loop will
     // exit immediately
     pos_target_reached = false;

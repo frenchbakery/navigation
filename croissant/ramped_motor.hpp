@@ -20,7 +20,8 @@ class RampedMotor : public Motor
 protected:
     BackEMF position_provider;
 
-
+    // start position of the current position control operation
+    int start_pos = 0;
     // current position goal
     int goal_pos = 0;
     // how far the actual position can be from the goal for the position controller to 

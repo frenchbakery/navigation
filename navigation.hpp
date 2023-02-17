@@ -20,6 +20,7 @@ class Navigation
 protected:
     el::vec2_t current_position;
     double current_rotation = 0;
+    int configured_speed = 500;
 
 
 public:
@@ -29,6 +30,14 @@ public:
     // === System state getters and setters === //
     virtual const el::vec2_t &getCurrentPosition() const;
     virtual double getCurrentRotation() const;
+
+    /**
+     * @brief sets the speed used for any subsequent 
+     * target operations
+     * 
+     * @param _speed speed in ticks per second (0 to 1500)
+     */
+    virtual el::retcode setMotorSpeed(int speed);
 
     /**
      * @brief rotates the robot by a specific angle.
