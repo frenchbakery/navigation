@@ -11,8 +11,8 @@
 
 #pragma once
 
+#include <kiprplus/ramped_motor.hpp>
 #include "../navigation.hpp"
-#include "ramped_motor.hpp"
 
 class CRNav : public Navigation
 {
