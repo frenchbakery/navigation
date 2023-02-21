@@ -16,8 +16,8 @@
 
 class CRNav : public Navigation
 {
-    RampedMotor motorl;
-    RampedMotor motorr;
+    kp::RampedMotor motorl;
+    kp::RampedMotor motorr;
 
 public:
     /**
