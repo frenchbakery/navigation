@@ -51,22 +51,23 @@ test myfunc (int b) {
 
 
 CRNav::CRNav()
-    : motorl(LEFT_MOTOR_PORT),
-      motorr(RIGHT_MOTOR_PORT)
+    : motorl(std::make_shared<kp::RampedMotor>(LEFT_MOTOR_PORT)),
+      motorr(std::make_shared<kp::RampedMotor>(RIGHT_MOTOR_PORT)),
+      engine({motorl, motorr})
 {
 }
 
 el::retcode CRNav::initialize()
 {
-    motorl.clearPositionCounter();
-    motorr.clearPositionCounter();
+    motorl->clearPositionCounter();
+    motorr->clearPositionCounter();
     return el::retcode::ok;
 }
 
 el::retcode CRNav::terminate()
 {
-    motorl.off();
-    motorr.off();
+    motorl->off();
+    motorr->off();
     return el::retcode::ok;
 }
 
@@ -75,8 +76,8 @@ el::retcode CRNav::rotateBy(double angle)
     double distance_per_radian = TRACK_CIRCUMFERENCE / (2 * M_PI);
     double distance = angle * distance_per_radian;
     double ticks = distance * GET_TICKS_PER_CM(TURNING_TICKS_PER_ROTATION);
-    motorl.moveRelativePosition(configured_speed, -ticks);
-    motorr.moveRelativePosition(configured_speed, ticks);
+    motorl->moveRelativePosition(configured_speed, -ticks);
+    motorr->moveRelativePosition(configured_speed, ticks);
     current_rotation += angle;
     return el::retcode::ok;
 }
@@ -84,15 +85,16 @@ el::retcode CRNav::rotateBy(double angle)
 el::retcode CRNav::driveDistance(double distance)
 {
     double ticks = distance * GET_TICKS_PER_CM(STRAIGHT_TICKS_PER_ROTATION);
-    motorl.moveRelativePosition(configured_speed, ticks);
-    motorr.moveRelativePosition(configured_speed, ticks);
+    //motorl->moveRelativePosition(configured_speed, ticks);
+    //motorr->moveRelativePosition(configured_speed, ticks);
+    engine.moveRelativePosition(configured_speed, ticks);
     current_position += el::polar_t(current_rotation, distance);
     return el::retcode::ok;
 }
 
 el::retcode CRNav::awaitTargetReached()
 {
-    motorr.blockMotorDone();
-    motorl.blockMotorDone();
+    motorr->blockMotorDone();
+    motorl->blockMotorDone();
     return el::retcode::ok;
 }
