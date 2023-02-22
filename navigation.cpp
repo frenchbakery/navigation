@@ -65,3 +65,8 @@ el::retcode Navigation::awaitTargetReached()
     return el::retcode::noimpl;
 }
 
+el::retcode Navigation::awaitTargetPercentage(int percent)
+{
+    noimpl();
+    return el::retcode::noimpl;
+}

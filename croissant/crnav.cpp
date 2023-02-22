@@ -9,7 +9,12 @@
  *
  */
 
+#include <iostream>
+#include <iomanip>
+#include <kipr/util.hpp>
+
 #include "crnav.hpp"
+
 
 #define LEFT_MOTOR_PORT 1
 #define RIGHT_MOTOR_PORT 0
@@ -85,9 +90,9 @@ el::retcode CRNav::rotateBy(double angle)
 el::retcode CRNav::driveDistance(double distance)
 {
     double ticks = distance * GET_TICKS_PER_CM(STRAIGHT_TICKS_PER_ROTATION);
-    //motorl->moveRelativePosition(configured_speed, ticks);
-    //motorr->moveRelativePosition(configured_speed, ticks);
-    engine.moveRelativePosition(configured_speed, ticks);
+    motorl->moveRelativePosition(configured_speed, ticks);
+    motorr->moveRelativePosition(configured_speed, ticks);
+    //engine.moveRelativePosition(configured_speed, ticks);
     current_position += el::polar_t(current_rotation, distance);
     return el::retcode::ok;
 }
@@ -97,4 +102,16 @@ el::retcode CRNav::awaitTargetReached()
     motorr->blockMotorDone();
     motorl->blockMotorDone();
     return el::retcode::ok;
+}
+
+el::retcode CRNav::awaitTargetPercentage(int percent)
+{
+    while (true)
+    {
+        int l = motorl->getPercentCompleted();
+        int r = motorr->getPercentCompleted();
+        if ((l+r) / 2 >= std::min(percent, 100))
+            break;
+        msleep(10);
+    }
 }

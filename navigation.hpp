@@ -63,5 +63,17 @@ public:
      * @return el::retcode 
      */
     virtual el::retcode awaitTargetReached();
+
+    /**
+     * @brief blocks until the currently active target is completed
+     * to a certain percentage. For example, if the target is driving 
+     * forward two meters, awaitTargetPercentage(50) will block until 
+     * one meter has been completed. If the requested percentage has
+     * already been passed, the function will return immediately.
+     * 
+     * @param percent percentage of the goal
+     * @return el::retcode 
+     */
+    virtual el::retcode awaitTargetPercentage(int percent);
     
 };

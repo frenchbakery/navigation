@@ -42,5 +42,6 @@ public:
     virtual el::retcode rotateBy(double angle) override;
     virtual el::retcode driveDistance(double distance) override;
     virtual el::retcode awaitTargetReached() override;
+    virtual el::retcode awaitTargetPercentage(int percent) override;
 
 };
