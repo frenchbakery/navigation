@@ -9,6 +9,8 @@
  *
  */
 
+#ifdef __CROISSANT
+
 #include <iostream>
 #include <iomanip>
 #include <kipr/util.hpp>
@@ -44,15 +46,6 @@ constexpr double GET_TICKS_PER_CM(
 constexpr double __track_circumference = 2 * WHEEL_TO_CENTER_CM * M_PI;
 #define TRACK_CIRCUMFERENCE __track_circumference
 //constexpr double __
-
-
-struct test 
-{
-    int a, b;
-};
-test myfunc (int b) {
-
-}
 
 
 CRNav::CRNav()
@@ -115,3 +108,5 @@ el::retcode CRNav::awaitTargetPercentage(int percent)
         msleep(10);
     }
 }
+
+#endif // __CROISSANT

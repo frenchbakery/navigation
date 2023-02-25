@@ -1,28 +1,25 @@
 /**
- * @file crnav.hpp
+ * @file tinav.hpp
  * @author melektron
- * @brief Navigation implementation for the croissant robot
+ * @brief navigation implementatino for tiramisu
  * @version 0.1
- * @date 2023-02-09
+ * @date 2023-02-24
  * 
  * @copyright Copyright FrenchBakery (c) 2023
  * 
  */
 
-#ifdef __CROISSANT
-
 #pragma once
 
-#include <kiprplus/ramped_motor.hpp>
-#include <kiprplus/aggregation_engine.hpp>
-#include <memory>
+#ifdef __TIRAMISU
+
+
 #include "../navigation.hpp"
+
 
 class CRNav : public Navigation
 {
-    std::shared_ptr<kp::RampedMotor> motorl;
-    std::shared_ptr<kp::RampedMotor> motorr;
-    kp::AggregationEngine engine;
+    
 
 public:
     /**
@@ -48,4 +45,5 @@ public:
 
 };
 
-#endif // __CROISSANT
+
+#endif // __TIRAMISU
