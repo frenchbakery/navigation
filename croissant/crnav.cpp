@@ -13,7 +13,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include <kipr/util.hpp>
+#include <kipr/time/time.h>
 
 #include "crnav.hpp"
 
