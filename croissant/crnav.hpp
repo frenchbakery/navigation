@@ -13,15 +13,15 @@
 
 #pragma once
 
-#include <kiprplus/ramped_motor.hpp>
+#include <kiprplus/pid_motor.hpp>
 #include <kiprplus/aggregation_engine.hpp>
 #include <memory>
 #include "../navigation.hpp"
 
 class CRNav : public Navigation
 {
-    std::shared_ptr<kp::RampedMotor> motorl;
-    std::shared_ptr<kp::RampedMotor> motorr;
+    std::shared_ptr<kp::PIDMotor> motorl;
+    std::shared_ptr<kp::PIDMotor> motorr;
     kp::AggregationEngine engine;
 
 public:

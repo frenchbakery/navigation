@@ -39,7 +39,7 @@ constexpr double GET_TICKS_PER_CM(
     //const double wheel_circumference = wheel_radius_cm * M_PI;
     return ticks_per_revolution / /*wheel_circumference*/ (wheel_radius_cm * M_PI);
 }
-#define STRAIGHT_TICKS_PER_ROTATION 2100
+#define STRAIGHT_TICKS_PER_ROTATION 1867
 #define TURNING_TICKS_PER_ROTATION 1900
 
 #define WHEEL_TO_CENTER_CM 8.15  // Distance from the wheel to the center point of the robot (between the two wheels)
@@ -47,11 +47,14 @@ constexpr double __track_circumference = 2 * WHEEL_TO_CENTER_CM * M_PI;
 #define TRACK_CIRCUMFERENCE __track_circumference
 //constexpr double __
 
+#define LMULT 1.02
+#define RMULT 1
+
 
 CRNav::CRNav()
-    : motorl(std::make_shared<kp::RampedMotor>(LEFT_MOTOR_PORT)),
-      motorr(std::make_shared<kp::RampedMotor>(RIGHT_MOTOR_PORT))//,
-      //engine({motorl, motorr})
+    : motorl(std::make_shared<kp::PIDMotor>(LEFT_MOTOR_PORT)),
+      motorr(std::make_shared<kp::PIDMotor>(RIGHT_MOTOR_PORT)),
+      engine({motorl, motorr})
 {
 }
 
@@ -59,6 +62,8 @@ el::retcode CRNav::initialize()
 {
     motorl->clearPositionCounter();
     motorr->clearPositionCounter();
+    motorl->enablePositionControl();
+    motorr->enablePositionControl();
     return el::retcode::ok;
 }
 
@@ -73,9 +78,10 @@ el::retcode CRNav::rotateBy(double angle)
 {
     double distance_per_radian = TRACK_CIRCUMFERENCE / (2 * M_PI);
     double distance = angle * distance_per_radian;
-    double ticks = distance * GET_TICKS_PER_CM(TURNING_TICKS_PER_ROTATION);
-    motorl->moveRelativePosition(configured_speed, -ticks);
-    motorr->moveRelativePosition(configured_speed, ticks);
+    double ticks = std::abs(distance * GET_TICKS_PER_CM(TURNING_TICKS_PER_ROTATION));
+    double direction = angle < 0 ? -1 : 1;
+    engine.setMovementModifiers({-direction * LMULT, direction * RMULT});   // set modifiers to invert one motor
+    engine.moveRelativePosition(configured_speed, ticks);
     current_rotation += angle;
     return el::retcode::ok;
 }
@@ -83,9 +89,8 @@ el::retcode CRNav::rotateBy(double angle)
 el::retcode CRNav::driveDistance(double distance)
 {
     double ticks = distance * GET_TICKS_PER_CM(STRAIGHT_TICKS_PER_ROTATION);
-    motorl->moveRelativePosition(configured_speed, ticks);
-    motorr->moveRelativePosition(configured_speed, ticks);
-    //engine.moveRelativePosition(configured_speed, ticks);
+    engine.setMovementModifiers({LMULT, RMULT});    // both motors in the same direction
+    engine.moveRelativePosition(configured_speed, ticks);
     current_position += el::polar_t(current_rotation, distance);
     return el::retcode::ok;
 }
@@ -99,14 +104,14 @@ el::retcode CRNav::awaitTargetReached()
 
 el::retcode CRNav::awaitTargetPercentage(int percent)
 {
-    while (true)
+    /*while (true)
     {
         int l = motorl->getPercentCompleted();
         int r = motorr->getPercentCompleted();
         if ((l+r) / 2 >= std::min(percent, 100))
             break;
         msleep(10);
-    }
+    }*/
 
     return el::retcode::ok;
 }
