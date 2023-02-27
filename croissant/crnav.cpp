@@ -50,8 +50,8 @@ constexpr double __track_circumference = 2 * WHEEL_TO_CENTER_CM * M_PI;
 
 CRNav::CRNav()
     : motorl(std::make_shared<kp::RampedMotor>(LEFT_MOTOR_PORT)),
-      motorr(std::make_shared<kp::RampedMotor>(RIGHT_MOTOR_PORT)),
-      engine({motorl, motorr})
+      motorr(std::make_shared<kp::RampedMotor>(RIGHT_MOTOR_PORT))//,
+      //engine({motorl, motorr})
 {
 }
 
@@ -107,6 +107,8 @@ el::retcode CRNav::awaitTargetPercentage(int percent)
             break;
         msleep(10);
     }
+
+    return el::retcode::ok;
 }
 
 #endif // __CROISSANT
