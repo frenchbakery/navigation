@@ -28,11 +28,11 @@ constexpr double __wheel_circumference = WHEEL_RADIUS_CM * M_PI;
 constexpr double __ticks_per_cm = TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_CM;
 #define TICKS_PER_CM __ticks_per_cm*/
 
-#define STRAIGHT_TICKS_PER_ROTATION 1867
+#define STRAIGHT_TICKS_PER_ROTATION 1850 //1867
 #define STRAIGHT_LMULT 1.02
 #define STRAIGHT_RMULT 1
 
-#define TURNING_TICKS_PER_ROTATION 1916
+#define TURNING_TICKS_PER_ROTATION 1916 //1916
 #define TURNING_LMULT 1.02
 #define TURNING_RMULT 1
 
@@ -96,6 +96,11 @@ el::retcode CRNav::driveDistance(double distance)
     engine.moveRelativePosition(configured_speed, ticks);
     current_position += el::polar_t(current_rotation, distance);
     return el::retcode::ok;
+}
+
+bool CRNav::targetReached()
+{
+    return !engine.sequenceRunning();
 }
 
 el::retcode CRNav::awaitTargetReached()

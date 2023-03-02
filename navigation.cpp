@@ -59,6 +59,12 @@ el::retcode Navigation::driveDistance(double distance)
     return el::retcode::noimpl;
 }
 
+bool Navigation::targetReached()
+{
+    noimpl();
+    return true;
+}
+
 el::retcode Navigation::awaitTargetReached()
 {
     noimpl();

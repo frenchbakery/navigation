@@ -57,6 +57,12 @@ public:
     virtual el::retcode driveDistance(double distance);
 
     /**
+     * @retval true - last target has been reached (no target active)
+     * @retval false - target currently active but it hasen't been reached jet
+     */
+    virtual bool targetReached();
+
+    /**
      * @brief blocks until the currently active target is reached.
      * If no target is active it will return immediately.
      * 
