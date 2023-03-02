@@ -29,12 +29,16 @@ constexpr double __ticks_per_cm = TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_CM;
 #define TICKS_PER_CM __ticks_per_cm*/
 
 #define STRAIGHT_TICKS_PER_ROTATION 1850 //1867
-#define STRAIGHT_LMULT 1.02
-#define STRAIGHT_RMULT 1
+#define STRAIGHT_LMULTP 1.02
+#define STRAIGHT_RMULTP 1
+#define STRAIGHT_LMULTN -1.02
+#define STRAIGHT_RMULTN -1
 
-#define TURNING_TICKS_PER_ROTATION 1916 //1916
-#define TURNING_LMULT 1.02
-#define TURNING_RMULT 1
+#define TURNING_TICKS_PER_ROTATION 1922 //1916
+#define TURNING_LMULTP 0.99     // for CW Turn  (- Angle)
+#define TURNING_RMULTP 1.02     // for CCW Turn (+ Angle)
+#define TURNING_LMULTN -1.04    // for CCW Turn (+ Angle)
+#define TURNING_RMULTN -0.97    // for CW Turn  (- Angle)
 
 // constexpr function that allows creating different constants for
 // the ticks per cm in different driving functions.
@@ -83,7 +87,9 @@ el::retcode CRNav::rotateBy(double angle)
     double distance = angle * distance_per_radian;
     double ticks = std::abs(distance * GET_TICKS_PER_CM(TURNING_TICKS_PER_ROTATION));
     double direction = angle < 0 ? -1 : 1;
-    engine.setMovementModifiers({-direction * TURNING_LMULT, direction * TURNING_RMULT});   // set modifiers to invert one motor
+    double lmult = -distance > 0 ? TURNING_LMULTP : TURNING_LMULTN;
+    double rmult = distance > 0 ? TURNING_RMULTP : TURNING_RMULTN;
+    engine.setMovementModifiers({lmult, rmult});   // set modifiers to invert one motor
     engine.moveRelativePosition(configured_speed, ticks);
     current_rotation += angle;
     return el::retcode::ok;
@@ -91,8 +97,10 @@ el::retcode CRNav::rotateBy(double angle)
 
 el::retcode CRNav::driveDistance(double distance)
 {
-    double ticks = distance * GET_TICKS_PER_CM(STRAIGHT_TICKS_PER_ROTATION);
-    engine.setMovementModifiers({STRAIGHT_LMULT, STRAIGHT_RMULT});    // both motors in the same direction
+    double ticks = std::abs(distance * GET_TICKS_PER_CM(STRAIGHT_TICKS_PER_ROTATION));
+    double lmult = distance > 0 ? STRAIGHT_LMULTP : STRAIGHT_LMULTN;
+    double rmult = distance > 0 ? STRAIGHT_RMULTP : STRAIGHT_RMULTN;
+    engine.setMovementModifiers({lmult, rmult});    // both motors in the same direction
     engine.moveRelativePosition(configured_speed, ticks);
     current_position += el::polar_t(current_rotation, distance);
     return el::retcode::ok;
