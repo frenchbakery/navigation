@@ -145,6 +145,16 @@ public:
     virtual el::retcode driveVector(el::vec2_t d, bool bw = false);
 
     /**
+     * @brief drives in a straight line to an absolute position in the root coordinate system.
+     * This will add a drive sequence command to the queue.
+     * 
+     * @param pos absolute target position
+     * @param bw flag to tell to robot to drive backward instead of forwards
+     * @retval ok
+     */
+    virtual el::retcode driveToPosition(el::vec2_t pos, bool bw = false);
+
+    /**
      * @retval true - last target has been reached (no target active)
      * @retval false - target currently active but it hasen't been reached jet
      */

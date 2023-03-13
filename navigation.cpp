@@ -158,12 +158,17 @@ el::retcode Navigation::driveDistance(double distance)
 
 el::retcode Navigation::driveVector(el::vec2_t d, bool bw)
 {
-    el::vec2_t goal = current_position + d;
-
     rotateTo(d.get_phi() + (bw ? M_PI : 0));
     driveDistance(d.get_r() * (bw ? -1 : 1));
 
     return el::retcode::ok;
+}
+
+// TODO: fix, this doesn't quite work jet. the current position might not be accurate
+el::retcode Navigation::driveToPosition(el::vec2_t pos, bool bw)
+{
+    el::vec2_t delta = pos - current_position;
+    return driveVector(delta, bw);
 }
 
 el::retcode Navigation::startSequence()
