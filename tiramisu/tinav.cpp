@@ -26,8 +26,8 @@
 #define STRAIGHT_TICKS_PER_CM 23
 #define STRAIGHT_LMULTP 1
 #define STRAIGHT_RMULTP 1
-#define STRAIGHT_LMULTN 1
-#define STRAIGHT_RMULTN 1
+#define STRAIGHT_LMULTN -1
+#define STRAIGHT_RMULTN -1
 
 #define TURNING_TICKS_PER_CM 23
 #define TURNING_LMULTP 1    // for CW Turn  (- Angle)

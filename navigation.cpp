@@ -101,10 +101,19 @@ double Navigation::getCurrentRotation() const
     return current_rotation;
 }
 
-el::retcode Navigation::setMotorSpeed(int speed)
+void Navigation::setMotorSpeed(int speed)
 {
     configured_speed = speed;
-    return el::retcode::ok;
+}
+
+void Navigation::setCurrentPosition(el::vec2_t pos)
+{
+    current_position = pos;
+}
+
+void Navigation::setCurrentRotation(double angle)
+{
+    current_rotation = angle;
 }
 
 el::retcode Navigation::rotateBy(double angle)
@@ -147,12 +156,12 @@ el::retcode Navigation::driveDistance(double distance)
     return el::retcode::ok;
 }
 
-el::retcode Navigation::driveVector(el::vec2_t d)
+el::retcode Navigation::driveVector(el::vec2_t d, bool bw)
 {
     el::vec2_t goal = current_position + d;
 
-    rotateTo(d.get_phi());
-    driveDistance(d.get_r());
+    rotateTo(d.get_phi() + (bw ? M_PI : 0));
+    driveDistance(d.get_r() * (bw ? -1 : 1));
 
     return el::retcode::ok;
 }

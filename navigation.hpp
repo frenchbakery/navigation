@@ -61,7 +61,23 @@ public:
      * 
      * @param _speed speed in ticks per second (0 to 1500)
      */
-    virtual el::retcode setMotorSpeed(int speed);
+    virtual void setMotorSpeed(int speed);
+
+    /**
+     * @brief Resets the internally kept current position to a specific value.
+     * This can be used to initialize the coordinate system.
+     * 
+     * @param pos new position
+     */
+    virtual void setCurrentPosition(el::vec2_t pos);
+
+    /**
+     * @brief Resets the internally kept current rotation to a specific value.
+     * This can be used to initialize the coordinate system.
+     * 
+     * @param angle new rotation angle
+     */
+    virtual void setCurrentRotation(double angle);
 
     /**
      * @brief starts a robot rotation command
@@ -122,9 +138,11 @@ public:
      * This will add a drive sequence command to the queue.
      * 
      * @param d delta vector
+     * @param bw flag to tell the robot to drive backward. This will cause the angle
+     * to shift by 180 degrees as the robot will drive backward instead of forward.
      * @retval ok - started driving
      */
-    virtual el::retcode driveVector(el::vec2_t d);
+    virtual el::retcode driveVector(el::vec2_t d, bool bw = false);
 
     /**
      * @retval true - last target has been reached (no target active)
