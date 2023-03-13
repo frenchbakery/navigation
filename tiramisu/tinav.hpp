@@ -41,8 +41,8 @@ public:
 
     using Navigation::setMotorSpeed;
 
-    virtual el::retcode rotateBy(double angle) override;
-    virtual el::retcode driveDistance(double distance) override;
+    virtual el::retcode rawRotateBy(double angle) override;
+    virtual el::retcode rawDriveDistance(double distance) override;
     virtual bool targetReached() override;
     virtual el::retcode awaitTargetReached() override;
     virtual el::retcode awaitTargetPercentage(int percent) override;

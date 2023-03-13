@@ -67,6 +67,7 @@ CRNav::CRNav()
 
 el::retcode CRNav::initialize()
 {
+    Navigation::initialize();
     motorl->clearPositionCounter();
     motorr->clearPositionCounter();
     motorl->enablePositionControl();
@@ -78,10 +79,11 @@ el::retcode CRNav::terminate()
 {
     motorl->off();
     motorr->off();
+    Navigation::terminate();
     return el::retcode::ok;
 }
 
-el::retcode CRNav::rotateBy(double angle)
+el::retcode CRNav::rawRotateBy(double angle)
 {
     double distance_per_radian = TRACK_CIRCUMFERENCE / (2 * M_PI);
     double distance = angle * distance_per_radian;
@@ -95,7 +97,7 @@ el::retcode CRNav::rotateBy(double angle)
     return el::retcode::ok;
 }
 
-el::retcode CRNav::driveDistance(double distance)
+el::retcode CRNav::rawDriveDistance(double distance)
 {
     double ticks = std::abs(distance * GET_TICKS_PER_CM(STRAIGHT_TICKS_PER_ROTATION));
     double lmult = distance > 0 ? STRAIGHT_LMULTP : STRAIGHT_LMULTN;

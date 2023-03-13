@@ -51,6 +51,7 @@ TINav::TINav()
 
 el::retcode TINav::initialize()
 {
+    Navigation::initialize();
     motorl->clearPositionCounter();
     motorr->clearPositionCounter();
     motorl->setAbsoluteTarget(0);
@@ -64,10 +65,11 @@ el::retcode TINav::terminate()
 {
     motorl->disablePositionControl();
     motorr->disablePositionControl();
+    Navigation::terminate();
     return el::retcode::ok;
 }
 
-el::retcode TINav::rotateBy(double angle)
+el::retcode TINav::rawRotateBy(double angle)
 {
     double distance_per_radian = TRACK_CIRCUMFERENCE / (2 * M_PI);
     double distance = angle * distance_per_radian;
@@ -81,7 +83,7 @@ el::retcode TINav::rotateBy(double angle)
     return el::retcode::ok;
 }
 
-el::retcode TINav::driveDistance(double distance)
+el::retcode TINav::rawDriveDistance(double distance)
 {
     double ticks = std::abs(distance * STRAIGHT_TICKS_PER_CM);
     double lmult = distance > 0 ? STRAIGHT_LMULTP : STRAIGHT_LMULTN;
