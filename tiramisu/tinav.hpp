@@ -13,13 +13,16 @@
 
 #ifdef __TIRAMISU
 
-
+#include <kiprplus/create_motor.hpp>
+#include <kiprplus/aggregation_engine.hpp>
+#include <memory>
 #include "../navigation.hpp"
 
-
-class CRNav : public Navigation
+class TINav : public Navigation
 {
-    
+    std::shared_ptr<kp::CreateMotor> motorl;
+    std::shared_ptr<kp::CreateMotor> motorr;
+    kp::AggregationEngine engine;
 
 public:
     /**
@@ -28,7 +31,7 @@ public:
      * initialization of actual systems is done in
      * the initialize() method.
      */
-    CRNav();
+    TINav();
 
     virtual el::retcode initialize() override;
     virtual el::retcode terminate() override;
@@ -40,6 +43,7 @@ public:
 
     virtual el::retcode rotateBy(double angle) override;
     virtual el::retcode driveDistance(double distance) override;
+    virtual bool targetReached() override;
     virtual el::retcode awaitTargetReached() override;
     virtual el::retcode awaitTargetPercentage(int percent) override;
 
