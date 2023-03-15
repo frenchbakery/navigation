@@ -34,7 +34,7 @@ constexpr double __ticks_per_cm = TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_CM;
 #define STRAIGHT_LMULTN -1.02
 #define STRAIGHT_RMULTN -1
 
-#define TURNING_TICKS_PER_ROTATION 1940 //1922 //1916
+#define TURNING_TICKS_PER_ROTATION 1930 //1922 //1916
 #define TURNING_LMULTP 0.99     // for CW Turn  (- Angle)
 #define TURNING_RMULTP 1.02     // for CCW Turn (+ Angle)
 #define TURNING_LMULTN -1.04    // for CCW Turn (+ Angle)
