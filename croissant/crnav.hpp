@@ -24,6 +24,8 @@ class CRNav : public Navigation
     std::shared_ptr<kp::PIDMotor> motorr;
     kp::AggregationEngine engine;
 
+    int getCommandTimeout() override { return 1000; }
+
 public:
     /**
      * @brief Initializes motors and subobjects

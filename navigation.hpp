@@ -46,6 +46,11 @@ protected:
     std::thread sequence_thread;
     void sequenceThreadFn();
 
+    
+    // This is the time waited after every command (even the last one)
+    // to ensure the PID controller has reached the target.
+    // Every impl has to override this.
+    virtual int getCommandTimeout() = 0;
 
 public:
     virtual el::retcode initialize();

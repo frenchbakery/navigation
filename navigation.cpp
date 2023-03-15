@@ -16,9 +16,6 @@
 
 #define WAIT_DELAY 50 // ms
 #define UPDATE_DELAY 2 // ms
-// This is the time waited after every command (even the last one)
-// to ensure the PID controller has reached the target.
-#define COMMAND_TIMEOUT 600 // ms
 
 void noimpl()
 {
@@ -39,6 +36,7 @@ double normalizeAngle(double a)
 
 void Navigation::sequenceThreadFn()
 {
+    bool first_command = true;
     while (!threxit)
     {
         // wait until the sequence is marked incomplete
@@ -60,15 +58,22 @@ void Navigation::sequenceThreadFn()
         if (command_queue.empty())
         {
             // timeout for the last command
-            msleep(COMMAND_TIMEOUT);
+            msleep(getCommandTimeout());
             sequence_complete = true;
+            first_command = true;
             lock.unlock();
             continue;
         }
 
         // read and execute the next command
         auto command = command_queue.front();
-        msleep(COMMAND_TIMEOUT);
+
+        // don't wait before the first command
+        if (first_command)
+            first_command = false;
+        else
+            msleep(getCommandTimeout());
+
         switch (command.type)
         {
         case seq_cmd_t::drive:

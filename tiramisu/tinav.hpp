@@ -23,6 +23,8 @@ class TINav : public Navigation
     std::shared_ptr<kp::CreateMotor> motorl;
     std::shared_ptr<kp::CreateMotor> motorr;
     kp::AggregationEngine engine;
+    
+    int getCommandTimeout() override { return 600; }
 
 public:
     /**
