@@ -145,7 +145,8 @@ public:
     virtual el::retcode driveVector(el::vec2_t d, bool bw = false);
 
     /**
-     * @brief drives in a straight line to an absolute position in the root coordinate system.
+     * @brief (not jet fully working) 
+     * drives in a straight line to an absolute position in the root coordinate system.
      * This will add a drive sequence command to the queue.
      * 
      * @param pos absolute target position
@@ -169,7 +170,8 @@ public:
     virtual el::retcode awaitTargetReached() = 0;
 
     /**
-     * @brief blocks until the currently next sequence target is completed
+     * @brief (Not jet implemented for both tiramisu and croissant)
+     * blocks until the currently next sequence target is completed
      * to a certain percentage. For example, if the target is driving 
      * forward two meters, awaitTargetPercentage(50) will block until 
      * one meter has been completed. If the requested percentage has
