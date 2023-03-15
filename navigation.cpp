@@ -83,12 +83,14 @@ void Navigation::sequenceThreadFn()
 el::retcode Navigation::initialize()
 {
     sequence_thread = std::thread(&Navigation::sequenceThreadFn, this);
+    return el::retcode::ok;
 }
 el::retcode Navigation::terminate()
 {
     threxit = true;
     if (sequence_thread.joinable())
         sequence_thread.join();
+    return el::retcode::ok;
 }
 
 const el::vec2_t &Navigation::getCurrentPosition() const
