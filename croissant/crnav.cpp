@@ -34,7 +34,7 @@ constexpr double __ticks_per_cm = TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_CM;
 #define STRAIGHT_LMULTN -1.02
 #define STRAIGHT_RMULTN -1
 
-#define TURNING_TICKS_PER_ROTATION 1922 //1916
+#define TURNING_TICKS_PER_ROTATION 1940 //1922 //1916
 #define TURNING_LMULTP 0.99     // for CW Turn  (- Angle)
 #define TURNING_RMULTP 1.02     // for CCW Turn (+ Angle)
 #define TURNING_LMULTN -1.04    // for CCW Turn (+ Angle)
@@ -135,27 +135,27 @@ el::retcode CRNav::awaitTargetPercentage(int percent)
 }
 
 
-void TINav::disablePositionControl()
+void CRNav::disablePositionControl()
 {
     motorl->disablePositionControl();
     motorr->disablePositionControl();
 }
-void TINav::enablePositionControl()
+void CRNav::enablePositionControl()
 {
     motorl->enablePositionControl();
     motorr->enablePositionControl();
 }
 
-void TINav::driveLeftSpeed(int speed)
+void CRNav::driveLeftSpeed(int speed)
 {
     motorl->moveAtVelocity(speed);
 }
-void TINav::driveRightSpeed(int speed)
+void CRNav::driveRightSpeed(int speed)
 {
     motorr->moveAtVelocity(speed);
 }
 
-void TINav::resetPositionControllers()
+void CRNav::resetPositionControllers()
 {
     motorl->setAbsoluteTarget(0);
     motorr->setAbsoluteTarget(0);
