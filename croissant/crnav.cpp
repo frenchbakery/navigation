@@ -134,4 +134,33 @@ el::retcode CRNav::awaitTargetPercentage(int percent)
     return el::retcode::ok;
 }
 
+
+void TINav::disablePositionControl()
+{
+    motorl->disablePositionControl();
+    motorr->disablePositionControl();
+}
+void TINav::enablePositionControl()
+{
+    motorl->enablePositionControl();
+    motorr->enablePositionControl();
+}
+
+void TINav::driveLeftSpeed(int speed)
+{
+    motorl->moveAtVelocity(speed);
+}
+void TINav::driveRightSpeed(int speed)
+{
+    motorr->moveAtVelocity(speed);
+}
+
+void TINav::resetPositionControllers()
+{
+    motorl->setAbsoluteTarget(0);
+    motorr->setAbsoluteTarget(0);
+    motorl->clearPositionCounter();
+    motorr->clearPositionCounter();
+}
+
 #endif // __CROISSANT
