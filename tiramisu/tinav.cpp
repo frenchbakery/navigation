@@ -29,7 +29,7 @@
 #define STRAIGHT_LMULTN -1
 #define STRAIGHT_RMULTN -1
 
-#define TURNING_TICKS_PER_CM 23
+#define TURNING_TICKS_PER_CM 23 * (1 - .0138888888888888888888888888888888888888888888888888888888888888888888888888888)
 #define TURNING_LMULTP 1    // for CW Turn  (- Angle)
 #define TURNING_RMULTP 1    // for CCW Turn (+ Angle)
 #define TURNING_LMULTN -1    // for CCW Turn (+ Angle)
@@ -148,6 +148,8 @@ void TINav::resetPositionControllers()
     motorr->setAbsoluteTarget(0);
     motorl->clearPositionCounter();
     motorr->clearPositionCounter();
+
+    std::cout << motorl->getPosition() << ", " << motorl->getTarget() << std::endl;
 }
 
 #endif // __TIRAMISU
