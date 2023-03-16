@@ -26,10 +26,10 @@
 #define STRAIGHT_TICKS_PER_CM 23
 #define STRAIGHT_LMULTP 1
 #define STRAIGHT_RMULTP 1
-#define STRAIGHT_LMULTN 1
-#define STRAIGHT_RMULTN 1
+#define STRAIGHT_LMULTN -1
+#define STRAIGHT_RMULTN -1
 
-#define TURNING_TICKS_PER_CM 23
+#define TURNING_TICKS_PER_CM 23 * (1 - .0138888888888888888888888888888888888888888888888888888888888888888888888888888)
 #define TURNING_LMULTP 1    // for CW Turn  (- Angle)
 #define TURNING_RMULTP 1    // for CCW Turn (+ Angle)
 #define TURNING_LMULTN -1    // for CCW Turn (+ Angle)
@@ -51,6 +51,7 @@ TINav::TINav()
 
 el::retcode TINav::initialize()
 {
+    Navigation::initialize();
     motorl->clearPositionCounter();
     motorr->clearPositionCounter();
     motorl->setAbsoluteTarget(0);
@@ -64,10 +65,11 @@ el::retcode TINav::terminate()
 {
     motorl->disablePositionControl();
     motorr->disablePositionControl();
+    Navigation::terminate();
     return el::retcode::ok;
 }
 
-el::retcode TINav::rotateBy(double angle)
+el::retcode TINav::rawRotateBy(double angle)
 {
     double distance_per_radian = TRACK_CIRCUMFERENCE / (2 * M_PI);
     double distance = angle * distance_per_radian;
@@ -81,7 +83,7 @@ el::retcode TINav::rotateBy(double angle)
     return el::retcode::ok;
 }
 
-el::retcode TINav::driveDistance(double distance)
+el::retcode TINav::rawDriveDistance(double distance)
 {
     double ticks = std::abs(distance * STRAIGHT_TICKS_PER_CM);
     double lmult = distance > 0 ? STRAIGHT_LMULTP : STRAIGHT_LMULTN;
@@ -120,6 +122,34 @@ el::retcode TINav::awaitTargetPercentage(int percent)
 
 
 
+void TINav::disablePositionControl()
+{
+    motorl->disablePositionControl();
+    motorr->disablePositionControl();
+}
+void TINav::enablePositionControl()
+{
+    motorl->enablePositionControl();
+    motorr->enablePositionControl();
+}
 
+void TINav::driveLeftSpeed(int speed)
+{
+    motorl->moveAtVelocity(speed);
+}
+void TINav::driveRightSpeed(int speed)
+{
+    motorr->moveAtVelocity(speed);
+}
+
+void TINav::resetPositionControllers()
+{
+    motorl->setAbsoluteTarget(0);
+    motorr->setAbsoluteTarget(0);
+    motorl->clearPositionCounter();
+    motorr->clearPositionCounter();
+
+    std::cout << motorl->getPosition() << ", " << motorl->getTarget() << std::endl;
+}
 
 #endif // __TIRAMISU

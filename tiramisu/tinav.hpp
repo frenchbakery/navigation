@@ -23,6 +23,8 @@ class TINav : public Navigation
     std::shared_ptr<kp::CreateMotor> motorl;
     std::shared_ptr<kp::CreateMotor> motorr;
     kp::AggregationEngine engine;
+    
+    int getCommandTimeout() override { return 600; }
 
 public:
     /**
@@ -41,12 +43,44 @@ public:
 
     using Navigation::setMotorSpeed;
 
-    virtual el::retcode rotateBy(double angle) override;
-    virtual el::retcode driveDistance(double distance) override;
+    virtual el::retcode rawRotateBy(double angle) override;
+    virtual el::retcode rawDriveDistance(double distance) override;
     virtual bool targetReached() override;
     virtual el::retcode awaitTargetReached() override;
     virtual el::retcode awaitTargetPercentage(int percent) override;
 
+    /**
+     * @brief disables position control on all motors to allow direct speed driving
+     */
+    void disablePositionControl();
+
+    /**
+     * @brief re-enables position control on all motors to after direct speed driving
+     */
+    void enablePositionControl();
+
+    /**
+     * @brief sets the speed of the left motor directly. This disables position control 
+     * FOR THAT MOTOR ONLY. To be sure, disable position control for both motors beforehand.
+     * DON'T lock the create_access_mutex before calling this function!
+     * 
+     * @param speed speed to drive at
+     */
+    void driveLeftSpeed(int speed);
+    /**
+     * @brief sets the speed of the right motor directly. This disables position control 
+     * FOR THAT MOTOR ONLY. To be sure, disable position control for both motors beforehand.
+     * DON'T lock the create_access_mutex before calling this function!
+     * 
+     * @param speed speed to drive at
+     */
+    void driveRightSpeed(int speed);
+
+    /**
+     * @brief clears motor position counters and resets their targets to 0 so position control
+     * can safely be enabled on them after direct driving
+     */
+    void resetPositionControllers();
 };
 
 

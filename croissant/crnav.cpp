@@ -34,7 +34,7 @@ constexpr double __ticks_per_cm = TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_CM;
 #define STRAIGHT_LMULTN -1.02
 #define STRAIGHT_RMULTN -1
 
-#define TURNING_TICKS_PER_ROTATION 1922 //1916
+#define TURNING_TICKS_PER_ROTATION 1930 //1922 //1916
 #define TURNING_LMULTP 0.99     // for CW Turn  (- Angle)
 #define TURNING_RMULTP 1.02     // for CCW Turn (+ Angle)
 #define TURNING_LMULTN -1.04    // for CCW Turn (+ Angle)
@@ -67,6 +67,7 @@ CRNav::CRNav()
 
 el::retcode CRNav::initialize()
 {
+    Navigation::initialize();
     motorl->clearPositionCounter();
     motorr->clearPositionCounter();
     motorl->enablePositionControl();
@@ -78,10 +79,11 @@ el::retcode CRNav::terminate()
 {
     motorl->off();
     motorr->off();
+    Navigation::terminate();
     return el::retcode::ok;
 }
 
-el::retcode CRNav::rotateBy(double angle)
+el::retcode CRNav::rawRotateBy(double angle)
 {
     double distance_per_radian = TRACK_CIRCUMFERENCE / (2 * M_PI);
     double distance = angle * distance_per_radian;
@@ -95,7 +97,7 @@ el::retcode CRNav::rotateBy(double angle)
     return el::retcode::ok;
 }
 
-el::retcode CRNav::driveDistance(double distance)
+el::retcode CRNav::rawDriveDistance(double distance)
 {
     double ticks = std::abs(distance * GET_TICKS_PER_CM(STRAIGHT_TICKS_PER_ROTATION));
     double lmult = distance > 0 ? STRAIGHT_LMULTP : STRAIGHT_LMULTN;
@@ -130,6 +132,35 @@ el::retcode CRNav::awaitTargetPercentage(int percent)
     }*/
 
     return el::retcode::ok;
+}
+
+
+void CRNav::disablePositionControl()
+{
+    motorl->disablePositionControl();
+    motorr->disablePositionControl();
+}
+void CRNav::enablePositionControl()
+{
+    motorl->enablePositionControl();
+    motorr->enablePositionControl();
+}
+
+void CRNav::driveLeftSpeed(int speed)
+{
+    motorl->moveAtVelocity(speed);
+}
+void CRNav::driveRightSpeed(int speed)
+{
+    motorr->moveAtVelocity(speed);
+}
+
+void CRNav::resetPositionControllers()
+{
+    motorl->setAbsoluteTarget(0);
+    motorr->setAbsoluteTarget(0);
+    motorl->clearPositionCounter();
+    motorr->clearPositionCounter();
 }
 
 #endif // __CROISSANT
