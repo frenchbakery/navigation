@@ -35,10 +35,10 @@ constexpr double __ticks_per_cm = TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_CM;
 #define STRAIGHT_RMULTN -1
 
 #define TURNING_TICKS_PER_ROTATION 1930 //1922 //1916
-#define TURNING_LMULTP 0.99     // for CW Turn  (- Angle)
-#define TURNING_RMULTP 1.02     // for CCW Turn (+ Angle)
-#define TURNING_LMULTN -1.04    // for CCW Turn (+ Angle)
-#define TURNING_RMULTN -0.97    // for CW Turn  (- Angle)
+#define TURNING_LMULTP 1.01     // for CW Turn  (- Angle)
+#define TURNING_RMULTP 1.005    // for CCW Turn (+ Angle)
+#define TURNING_LMULTN -1.005   // for CCW Turn (+ Angle)
+#define TURNING_RMULTN -1.01    // for CW Turn  (- Angle)
 
 // constexpr function that allows creating different constants for
 // the ticks per cm in different driving functions.
@@ -59,8 +59,8 @@ constexpr double __track_circumference = 2 * WHEEL_TO_CENTER_CM * M_PI;
 
 
 CRNav::CRNav()
-    : motorl(std::make_shared<kp::PIDMotor>(LEFT_MOTOR_PORT)),
-      motorr(std::make_shared<kp::PIDMotor>(RIGHT_MOTOR_PORT)),
+    : motorl(std::make_shared<kp::PIDMotor>(LEFT_MOTOR_PORT, 1500, 12)),
+      motorr(std::make_shared<kp::PIDMotor>(RIGHT_MOTOR_PORT, 1500, 12)),
       engine({motorl, motorr})
 {
 }
