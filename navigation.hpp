@@ -197,6 +197,12 @@ public:
     virtual el::retcode startSequence();
 
     /**
+     * @return true no sequence running
+     * @return false sequence currently running
+     */
+    virtual bool sequenceComplete();
+
+    /**
      * @brief blocks until the current sequence is completed.
      * 
      * @retval nak - no sequence active
