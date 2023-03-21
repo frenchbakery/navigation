@@ -197,6 +197,11 @@ el::retcode Navigation::startSequence()
     return el::retcode::ok;
 }
 
+bool Navigation::sequenceComplete()
+{
+    return sequence_complete;
+}
+
 el::retcode Navigation::awaitSequenceComplete()
 {
     if (sequence_complete)
