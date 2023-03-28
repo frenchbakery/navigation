@@ -28,7 +28,7 @@ constexpr double __wheel_circumference = WHEEL_RADIUS_CM * M_PI;
 constexpr double __ticks_per_cm = TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_CM;
 #define TICKS_PER_CM __ticks_per_cm*/
 
-#define STRAIGHT_TICKS_PER_ROTATION 1870 //1867
+#define STRAIGHT_TICKS_PER_ROTATION 2000 //1867
 #define STRAIGHT_LMULTP 1.018
 #define STRAIGHT_RMULTP 1
 #define STRAIGHT_LMULTN -1.018
