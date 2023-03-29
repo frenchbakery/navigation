@@ -28,7 +28,7 @@ constexpr double __wheel_circumference = WHEEL_RADIUS_CM * M_PI;
 constexpr double __ticks_per_cm = TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_CM;
 #define TICKS_PER_CM __ticks_per_cm*/
 
-#define STRAIGHT_TICKS_PER_ROTATION 2000 //1867
+#define STRAIGHT_TICKS_PER_ROTATION 1900 //1867
 #define STRAIGHT_LMULTP 1.018
 #define STRAIGHT_RMULTP 1
 #define STRAIGHT_LMULTN -1.018
@@ -36,8 +36,8 @@ constexpr double __ticks_per_cm = TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_CM;
 
 #define TURNING_TICKS_PER_ROTATION 1965 //1930 //1922 //1916
 #define TURNING_LMULTP 1.005     // for CW Turn  (- Angle)
-#define TURNING_RMULTP 1.005    // for CCW Turn (+ Angle)
-#define TURNING_LMULTN -1.005   // for CCW Turn (+ Angle)
+#define TURNING_RMULTP 1.004    // for CCW Turn (+ Angle)
+#define TURNING_LMULTN -1.004   // for CCW Turn (+ Angle)
 #define TURNING_RMULTN -1.005    // for CW Turn  (- Angle)
 
 // constexpr function that allows creating different constants for
